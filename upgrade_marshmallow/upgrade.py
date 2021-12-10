@@ -47,9 +47,15 @@ def replace_as_metadata_kw(
     find_rename_fields = FindRenameFields()
     find_rename_ma = FindRenameMarshmallow()
     find_imported_into_field = FindImportedIntoField()
-    MAPPING[id(find_rename_fields)] = id(node_transformer)
-    MAPPING[id(find_rename_ma)] = id(node_transformer)
-    MAPPING[id(find_imported_into_field)] = id(node_transformer)
+
+    node_transformer_id = id(node_transformer)
+    MAPPING[id(find_rename_fields)] = node_transformer_id
+    MAPPING[id(find_rename_ma)] = node_transformer_id
+    MAPPING[id(find_imported_into_field)] = node_transformer_id
+
+    TREE[node_transformer_id]['fields'] = 'fields'
+    TREE[node_transformer_id]['marshmallow'] = 'marshmallow'
+    TREE[node_transformer_id]['imported_fields'] = set()
 
     find_rename_fields.visit(tree)
     find_rename_ma.visit(tree)
@@ -93,10 +99,7 @@ class FindRenameMarshmallow(ast.NodeTransformer):
 class FindImportedIntoField(ast.NodeTransformer):
     def visit_ImportFrom(self, node: ast.ImportFrom) -> T.Any:
         node_transformer_id = MAPPING[id(self)]
-
         if node.module.endswith('marshmallow.fields'):
-            if 'imported_fields' not in TREE[node_transformer_id]:
-                TREE[node_transformer_id]['imported_fields'] = set()
             for alias in node.names:
                 TREE[node_transformer_id]['imported_fields'].add(alias.asname or alias.name)
         return node
