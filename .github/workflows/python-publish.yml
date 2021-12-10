@@ -6,8 +6,6 @@ on:
 
 jobs:
   deploy:
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'featureoverload/upgrade-marshmallow'
-
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
