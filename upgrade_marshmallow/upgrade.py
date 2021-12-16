@@ -38,8 +38,6 @@ def replace_as_metadata_kw(
     Args:
         - file (str): source code file path
         - indent (int): indent of source code
-
-    ref: https://www.youtube.com/watch?v=wn1CcLck-D4&ab_channel=PyConChina&t=1320
     """
     tree = astor.parse_file(file)
     node_transformer = ReplaceAsMetadataKW()
