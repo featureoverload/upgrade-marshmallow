@@ -159,3 +159,7 @@ Features
   .. literalinclude:: ../tests/samples/field_func/schemas.py
      :language: python
 
+6. rename `default` to `dump_default`, `missing` to `load_default`
+
+  .. literalinclude:: ../tests/samples/default_missing/schemas.py
+     :language: python
